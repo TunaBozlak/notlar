@@ -100,7 +100,7 @@ class _TrashPageState extends State<TrashPage> {
   }
 
   Future<bool> updateWithAPI(Note note) async {
-    String url = 'http://10.0.2.2:8080/api/notes/${note.id}';
+    String url = 'http://10.0.2.2:8085/api/notes/${note.id}';
     //10 sn time limit
 
     final response = await http.put(
@@ -124,7 +124,7 @@ class _TrashPageState extends State<TrashPage> {
   }
 
   deleteNotePermanently(Note deletedNote) async {
-    String url = 'http://10.0.2.2:8080/api/notes/${deletedNote.id}';
+    String url = 'http://10.0.2.2:8085/api/notes/${deletedNote.id}';
     //10 sn time limit
 
     final response = await http

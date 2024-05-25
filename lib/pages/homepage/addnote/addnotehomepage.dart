@@ -117,7 +117,7 @@ class AddNoteHomePageState extends State<AddNoteHomePage> {
                         noteText: noteText,
                         files: files);
                     user.notes.add(newNote);
-                    String url = 'http://10.0.2.2:8080/api/users/${user.email}';
+                    String url = 'http://10.0.2.2:8085/api/users/${user.email}';
                     //10 sn time limit
                     final response = await http.put(
                       Uri.parse(url),

@@ -155,7 +155,7 @@ class RegisterPage extends StatelessWidget {
       String password) async {
     User user = new User(
         email: mail, username: username, password: password, notes: []);
-    String url = 'http://10.0.2.2:8080/api/users';
+    String url = 'http://10.0.2.2:8085/api/users';
     print(json.encode(user));
     //10 sn time limit
     final response = await http.post(

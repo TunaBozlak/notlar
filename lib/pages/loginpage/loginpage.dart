@@ -189,7 +189,7 @@ class LoginPage extends StatelessWidget {
     String username = usernameController.text;
     String password = passwordController.text;
     User? user;
-    String url = 'http://10.0.2.2:8080/api/users/$username/$password';
+    String url = 'http://10.0.2.2:8085/api/users/$username/$password';
     //10 sn time limit
     final response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10));
     if (response.statusCode == 200) {

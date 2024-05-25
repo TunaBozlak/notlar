@@ -323,7 +323,7 @@ class FolderNotesPageState extends State<FolderNotesPage> {
   }
 
   Future<bool> updateWithAPI(Note note) async {
-    String url = 'http://10.0.2.2:8080/api/notes/${note.id}';
+    String url = 'http://10.0.2.2:8085/api/notes/${note.id}';
     //10 sn time limit
 
     final response = await http.put(
