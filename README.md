@@ -1,4 +1,4 @@
-# notlar
+# NotesApp
 
 A new Flutter project.
 
