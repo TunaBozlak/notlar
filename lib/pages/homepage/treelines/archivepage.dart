@@ -21,7 +21,9 @@ class _ArchivePageState extends State<ArchivePage> {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
 
     return Scaffold(
+      backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
       appBar: AppBar(
+        backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
         title: Text('Arşiv'),
       ),
       body: widget.archivedNotes.isEmpty ?Center(child: Text("Arşiv boş.")): ListView.builder(

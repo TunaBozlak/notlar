@@ -50,14 +50,14 @@ class ChooseFolderPage extends StatelessWidget {
             margin: EdgeInsets.all(8),
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[500],
+              color: themeNotifier.isDarkMode ? Colors.white12 : Colors.grey[400],
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
               child: Text(
                 folderName,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: themeNotifier.isDarkMode ? Colors.white : Colors.black87,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),

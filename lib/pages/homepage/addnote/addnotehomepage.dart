@@ -41,10 +41,10 @@ class _AddNoteHomePageState extends State<AddNoteHomePage> {
     User user = widget.user;
     return Scaffold(
       backgroundColor:
-      themeNotifier.isDarkMode ? Colors.grey[900] : Colors.grey[300],
+      themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
       appBar: AppBar(
         backgroundColor:
-        themeNotifier.isDarkMode ? Colors.grey[900] : Colors.grey[300],
+        themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
         title: Text('Yeni Not Ekle'),
         actions: [
           IconButton(

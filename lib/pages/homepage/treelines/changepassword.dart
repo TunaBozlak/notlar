@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:notlar/components/themenotifier.dart';
+import 'package:provider/provider.dart';
 import '../../../models/User.dart';
 import 'package:http/http.dart' as http;
 import '../homepage.dart';
@@ -12,12 +14,15 @@ class ChangePasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     TextEditingController oldPasswordController = TextEditingController();
     TextEditingController newPasswordController = TextEditingController();
     TextEditingController newPasswordController2 = TextEditingController();
 
     return Scaffold(
+      backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
       appBar: AppBar(
+        backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
         title: Text('Şifre Değiştir'),
       ),
       body: Padding(

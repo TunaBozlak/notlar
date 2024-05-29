@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     List<Note> deletedNotes = allNotes.where((note) => note.folderName == "Çöp Kutusu").toList();
     List<Note> archivedNotes = allNotes.where((note) => note.folderName == "Arşiv").toList();
 
-    //çöp ve arşiv dışındaki kategorilerin olduğu liste
+    // Çöp ve arşiv dışındaki kategorilerin olduğu liste
     List<Note> notes =
     allNotes.where((note) => note.folderName != "Çöp Kutusu" && note.folderName != "Arşiv").toList();
     return DefaultTabController(
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
         appBar: AppBar(
           backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
-          title: Text('Notlarım'),
+          title: Text('Notlarım', style: TextStyle(color: themeNotifier.isDarkMode ? Colors.white : Colors.black)),
           bottom: TabBar(
             tabs: [
               Tab(text: 'Klasörler'),
@@ -50,14 +50,14 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.search),
+              icon: Icon(Icons.search, color: themeNotifier.isDarkMode ? Colors.white : Colors.black),
               onPressed: () {
                 // Arama işlevselliğini uygula
                 showSearchDialog(context);
               },
             ),
             IconButton(
-              icon: Icon(Icons.menu),
+              icon: Icon(Icons.menu, color: themeNotifier.isDarkMode ? Colors.white : Colors.black),
               onPressed: () {
                 // Özel menüyü göster
                 showCustomMenu(context, notes, archivedNotes, deletedNotes);

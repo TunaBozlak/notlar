@@ -21,6 +21,7 @@ class _TrashPageState extends State<TrashPage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
         title: Text('Çöp Kutusu'),
       ),
       body: widget.deletedNotes.isEmpty
@@ -55,7 +56,7 @@ class _TrashPageState extends State<TrashPage> {
         tooltip: 'Çöp Kutusunu Temizle',
         child: Icon(Icons.delete_forever),
       ),
-      backgroundColor: themeNotifier.isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
     );
   }
 

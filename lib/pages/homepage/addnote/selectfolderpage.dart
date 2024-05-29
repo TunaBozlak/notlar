@@ -18,7 +18,7 @@ class SelectFolderPage extends StatelessWidget {
 
     return AlertDialog(
       title: Text('Klasör Seçin'),
-      backgroundColor: themeNotifier.isDarkMode ? Colors.grey[900] : Colors.white,
+      backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
       content: SingleChildScrollView(
         child: ListBody(
           children: folders.map((folder) {
