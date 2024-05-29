@@ -65,7 +65,7 @@ class FolderNotesPageState extends State<FolderNotesPage> {
                 builder: (context) {
                   return Container(
                     decoration: BoxDecoration(
-                      color: themeNotifier.isDarkMode ? Colors.grey[900] : Colors.white,
+                      color: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.white,
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(20.0),
                       ),

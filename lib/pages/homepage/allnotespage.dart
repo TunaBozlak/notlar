@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:notlar/components/themenotifier.dart';
 import 'package:notlar/models/note.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import 'folders/notecontentpage.dart';
 
@@ -25,6 +27,7 @@ class AllNotesPage extends StatefulWidget {
 class _AllNotesPageState extends State<AllNotesPage> {
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return Center(
       child: widget.notes.isEmpty
           ? Text("Henüz hiç not kaydedilmemiş.")
@@ -50,7 +53,7 @@ class _AllNotesPageState extends State<AllNotesPage> {
                 builder: (context) {
                   return Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.white,
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(20.0),
                       ),
