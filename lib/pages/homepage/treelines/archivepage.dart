@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
 import '../../../models/note.dart';
 import 'package:http/http.dart' as http;
+import '../../../components/themenotifier.dart';
+import 'package:provider/provider.dart';
 
 class ArchivePage extends StatefulWidget {
   final List<Note> archivedNotes;
@@ -17,6 +18,8 @@ class _ArchivePageState extends State<ArchivePage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Arşiv'),
@@ -41,6 +44,8 @@ class _ArchivePageState extends State<ArchivePage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final themeNotifier = Provider.of<ThemeNotifier>(context);
+
         return AlertDialog(
           title: Text('Emin misiniz?'),
           content: Text('Bu notu arşivden kaldırmak istediğinizden emin misiniz?'),

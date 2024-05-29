@@ -13,9 +13,9 @@ class AllNotesPage extends StatefulWidget {
   final List<Note> archivedNotes;
   const AllNotesPage(
       {Key? key,
-      required this.notes,
-      required this.deletedNotes,
-      required this.archivedNotes})
+        required this.notes,
+        required this.deletedNotes,
+        required this.archivedNotes})
       : super(key: key);
 
   @override
@@ -29,80 +29,80 @@ class _AllNotesPageState extends State<AllNotesPage> {
       child: widget.notes.isEmpty
           ? Text("Henüz hiç not kaydedilmemiş.")
           : ListView.builder(
-              itemCount: widget.notes.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(widget.notes[index].noteTitle),
-                  onTap: () {
-                    // Nota basıldığında yapılacak işlemler buraya yazılabilir
-                    editNote(context, index);
-                  },
-                  onLongPress: () {
-                    // Aşağıdan açılır menüyü göster
-                    showModalBottomSheet(
-                      context: context,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20.0),
-                        ),
+        itemCount: widget.notes.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(widget.notes[index].noteTitle),
+            onTap: () {
+              // Nota basıldığında yapılacak işlemler buraya yazılabilir
+              editNote(context, index);
+            },
+            onLongPress: () {
+              // Aşağıdan açılır menüyü göster
+              showModalBottomSheet(
+                context: context,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20.0),
+                  ),
+                ),
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20.0),
                       ),
-                      backgroundColor: Colors.transparent,
-                      builder: (context) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20.0),
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(Icons.edit),
-                                title: Text('İçeriği Düzenle'),
-                                onTap: () {
-                                  // Düzenleme işlemi
-                                  Navigator.pop(context);
-                                  editNote(context, index);
-                                },
-                              ),
-                              ListTile(
-                                leading: Icon(Icons.delete),
-                                title: Text('Sil'),
-                                onTap: () {
-                                  // Silme işlemi
-                                  Navigator.pop(context);
-                                  deleteNoteConfirmation(context, index);
-                                },
-                              ),
-                              ListTile(
-                                leading: Icon(Icons.archive),
-                                title: Text('Arşivle'),
-                                onTap: () {
-                                  // Arşivleme işlemi
-                                  Navigator.pop(context);
-                                  archiveNoteConfirmation(context, index);
-                                },
-                              ),
-                              ListTile(
-                                leading: Icon(Icons.edit),
-                                title: Text('Başlığı Yeniden Adlandır'),
-                                onTap: () {
-                                  // Yeniden adlandırma işlemi
-                                  Navigator.pop(context);
-                                  renameNote(context, index);
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
-              },
-            ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(Icons.edit),
+                          title: Text('İçeriği Düzenle'),
+                          onTap: () {
+                            // Düzenleme işlemi
+                            Navigator.pop(context);
+                            editNote(context, index);
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.delete),
+                          title: Text('Sil'),
+                          onTap: () {
+                            // Silme işlemi
+                            Navigator.pop(context);
+                            deleteNoteConfirmation(context, index);
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.archive),
+                          title: Text('Arşivle'),
+                          onTap: () {
+                            // Arşivleme işlemi
+                            Navigator.pop(context);
+                            archiveNoteConfirmation(context, index);
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.edit),
+                          title: Text('Başlığı Yeniden Adlandır'),
+                          onTap: () {
+                            // Yeniden adlandırma işlemi
+                            Navigator.pop(context);
+                            renameNote(context, index);
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 

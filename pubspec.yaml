@@ -12,6 +12,7 @@ dependencies:
   signature: ^5.5.0
   image_picker: ^1.0.8
   http: ^1.2.0
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

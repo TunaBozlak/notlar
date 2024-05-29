@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notlar/pages/homepage/folders/notecontentpage.dart';
 import 'package:http/http.dart' as http;
+import 'package:notlar/components/themenotifier.dart';
+import 'package:provider/provider.dart';
 
 import '../../../models/note.dart';
 
@@ -14,10 +16,10 @@ class FolderNotesPage extends StatefulWidget {
   final List<Note> archivedNotes;
   const FolderNotesPage(
       {Key? key,
-      required this.folderName,
-      required this.folderNotes,
-      required this.archivedNotes,
-      required this.deletedNotes})
+        required this.folderName,
+        required this.folderNotes,
+        required this.archivedNotes,
+        required this.deletedNotes})
       : super(key: key);
 
   @override
@@ -27,88 +29,95 @@ class FolderNotesPage extends StatefulWidget {
 class FolderNotesPageState extends State<FolderNotesPage> {
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
       appBar: AppBar(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
         title: Text('${widget.folderName} '),
       ),
       body: widget.folderNotes.length == 0
           ? Center(child: Text('Henüz bu kategori için not yok.'))
           : ListView.builder(
-              itemCount: widget.folderNotes.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(widget.folderNotes[index].noteTitle),
-                  onTap: () {
-                    editNote(context, index);
-                  },
-                  onLongPress: () {
-                    // Aşağıdan açılır menüyü göster
-                    showModalBottomSheet(
-                      context: context,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20.0),
-                        ),
-                      ),
-                      backgroundColor: Colors.transparent,
-                      builder: (context) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20.0),
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(Icons.edit),
-                                title: Text('İçeriği Düzenle'),
-                                onTap: () {
-                                  // Düzenleme işlemi
-                                  Navigator.pop(context);
-                                  editNote(context, index);
-                                },
-                              ),
-                              ListTile(
-                                leading: Icon(Icons.delete),
-                                title: Text('Sil'),
-                                onTap: () {
-                                  // Silme işlemi
-                                  Navigator.pop(context);
-                                  deleteNoteConfirmation(context, index);
-                                },
-                              ),
-                              ListTile(
-                                leading: Icon(Icons.archive),
-                                title: Text('Arşivle'),
-                                onTap: () {
-                                  // Arşivleme işlemi
-                                  Navigator.pop(context);
-                                  archiveNoteConfirmation(context, index);
-                                },
-                              ),
-                              ListTile(
-                                leading: Icon(Icons.edit),
-                                title: Text('Başlığı Yeniden Adlandır'),
-                                onTap: () {
-                                  // Yeniden adlandırma işlemi
-                                  Navigator.pop(context);
-                                  renameNote(context, index);
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
-              },
+        itemCount: widget.folderNotes.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(
+              widget.folderNotes[index].noteTitle,
+              style: TextStyle(
+                color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
+              ),
             ),
+            onTap: () {
+              editNote(context, index);
+            },
+            onLongPress: () {
+              // Aşağıdan açılır menüyü göster
+              showModalBottomSheet(
+                context: context,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20.0),
+                  ),
+                ),
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: themeNotifier.isDarkMode ? Colors.grey[900] : Colors.white,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20.0),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(Icons.edit),
+                          title: Text('İçeriği Düzenle'),
+                          onTap: () {
+                            // Düzenleme işlemi
+                            Navigator.pop(context);
+                            editNote(context, index);
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.delete),
+                          title: Text('Sil'),
+                          onTap: () {
+                            // Silme işlemi
+                            Navigator.pop(context);
+                            deleteNoteConfirmation(context, index);
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.archive),
+                          title: Text('Arşivle'),
+                          onTap: () {
+                            // Arşivleme işlemi
+                            Navigator.pop(context);
+                            archiveNoteConfirmation(context, index);
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.edit),
+                          title: Text('Başlığı Yeniden Adlandır'),
+                          onTap: () {
+                            // Yeniden adlandırma işlemi
+                            Navigator.pop(context);
+                            renameNote(context, index);
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 

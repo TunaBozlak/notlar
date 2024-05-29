@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:notlar/components/themenotifier.dart';
+import 'package:provider/provider.dart';
 import 'package:notlar/pages/homepage/treelines/changepassword.dart';
-
 import '../../../models/User.dart';
-
 
 class SettingsPage extends StatefulWidget {
   final User user;
-  const SettingsPage({Key? key, required this.user}) :  super(key: key);
+  const SettingsPage({Key? key, required this.user}) : super(key: key);
+
   @override
   SettingsPageState createState() => SettingsPageState();
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  bool isDarkModeEnabled = false;
   double fontSize = 16.0; // Örnek bir yazı tipi boyutu
 
   @override
@@ -24,30 +24,30 @@ class SettingsPageState extends State<SettingsPage> {
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: [
-          ListTile(
-            title: Text('Tema Seçimi'),
-            subtitle: Text(isDarkModeEnabled
-                ? 'Uygulamanın temasını karanlık moda geçirin'
-                : 'Uygulamanın temasını aydınlık moda geçirin'),
-            trailing: IconButton(
-              icon: Icon(isDarkModeEnabled ? Icons.dark_mode : Icons.light_mode),
-              onPressed: () {
-                setState(() {
-                  isDarkModeEnabled = !isDarkModeEnabled;
-                  changeTheme(isDarkModeEnabled);
-                });
-              },
-            ),
+          Consumer<ThemeNotifier>(
+            builder: (context, themeNotifier, child) {
+              return ListTile(
+                title: Text('Tema Seçimi'),
+                subtitle: Text(themeNotifier.isDarkMode
+                    ? 'Uygulamanın temasını karanlık moda geçirin'
+                    : 'Uygulamanın temasını aydınlık moda geçirin'),
+                trailing: IconButton(
+                  icon: Icon(themeNotifier.isDarkMode ? Icons.dark_mode : Icons.light_mode),
+                  onPressed: () {
+                    themeNotifier.toggleTheme();
+                  },
+                ),
+              );
+            },
           ),
           Divider(),
           ListTile(
             title: Text('Şifre Değiştir'),
             subtitle: Text('Şifrenizi değiştirmek için tıklayın'),
             onTap: () {
-              // Şifre değiştirme sayfasına git
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ChangePasswordPage(user: widget.user,)),
+                MaterialPageRoute(builder: (context) => ChangePasswordPage(user: widget.user)),
               );
             },
           ),
@@ -56,25 +56,12 @@ class SettingsPageState extends State<SettingsPage> {
             title: Text('Yazı Tipi Boyutu'),
             subtitle: Text('Yazı tipi boyutunu ayarlamak için tıklayın'),
             onTap: () {
-              showFontSizeDialog(); // Yazı tipi boyutu ayarları için bir dialog göster
+              showFontSizeDialog();
             },
           ),
         ],
       ),
     );
-  }
-
-  void changeTheme(bool isDarkModeEnabled) {
-    setState(() {
-      // Uygulama temasını güncelle
-      ThemeData themeData = isDarkModeEnabled ? ThemeData.dark() : ThemeData.light();
-      // MaterialApp'ın theme özelliğini güncelle
-      // Örneğin:
-      // MaterialApp(
-      //   theme: themeData,
-      //   ...
-      // );
-    });
   }
 
   void showFontSizeDialog() {

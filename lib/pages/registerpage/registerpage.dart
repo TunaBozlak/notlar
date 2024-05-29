@@ -1,11 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:notlar/components/mybutton.dart';
 import 'package:notlar/components/mytextfield.dart';
-
-import '../../models/User.dart';
+import 'package:notlar/components/themenotifier.dart';
+import 'package:notlar/models/User.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../../models/User.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
   final VoidCallback Girisyap;
@@ -13,13 +14,17 @@ class RegisterPage extends StatelessWidget {
 
   const RegisterPage({Key? key, required this.Girisyap, required this.Kayitol})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
     final mailController = TextEditingController();
+
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -33,7 +38,7 @@ class RegisterPage extends StatelessWidget {
                 Text(
                   'Hesap Oluştur!',
                   style: TextStyle(
-                    color: Colors.grey[700],
+                    color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[700],
                     fontSize: 20,
                   ),
                 ),
@@ -70,7 +75,7 @@ class RegisterPage extends StatelessWidget {
                     if (usernameController.text.isNotEmpty &&
                         mailController.text.isNotEmpty &&
                         passwordController.text.isNotEmpty) {
-                      createUser(context,mailController.text,usernameController.text,passwordController.text);
+                      createUser(context, mailController.text, usernameController.text, passwordController.text);
                     } else {
                       // Kullanıcıya bir uyarı gösterilebilir
                       showDialog(
@@ -101,20 +106,20 @@ class RegisterPage extends StatelessWidget {
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Colors.grey[400],
+                          color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[400],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
                           'veya devam et',
-                          style: TextStyle(color: Colors.grey[700]),
+                          style: TextStyle(color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[700]),
                         ),
                       ),
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Colors.grey[400],
+                          color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[400],
                         ),
                       ),
                     ],
@@ -130,7 +135,7 @@ class RegisterPage extends StatelessWidget {
                     children: [
                       Text(
                         'Zaten üye misin',
-                        style: TextStyle(color: Colors.grey[700]),
+                        style: TextStyle(color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[700]),
                       ),
                       SizedBox(width: 4),
                       Text(

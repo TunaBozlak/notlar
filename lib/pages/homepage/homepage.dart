@@ -1,7 +1,7 @@
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:notlar/components/themenotifier.dart';
 import 'package:notlar/models/User.dart';
 import 'package:notlar/pages/homepage/addnote/addnotehomepage.dart';
 import 'package:notlar/pages/homepage/allnotespage.dart';
@@ -12,35 +12,35 @@ import 'package:http/http.dart' as http;
 
 import '../../models/note.dart';
 import 'folders/choosefolderpage.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-
   final User user;
-  const HomePage({Key? key, required this.user}) :  super(key: key);
+
+  const HomePage({Key? key, required this.user}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
-
-
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
 
     List<Note> allNotes = widget.user.notes ?? [];
-    List<Note> deletedNotes= allNotes.where((note) => note.folderName == "Çöp Kutusu").toList();
+    List<Note> deletedNotes = allNotes.where((note) => note.folderName == "Çöp Kutusu").toList();
     List<Note> archivedNotes = allNotes.where((note) => note.folderName == "Arşiv").toList();
 
     //çöp ve arşiv dışındaki kategorilerin olduğu liste
-    List<Note> notes= allNotes.where((note) => note.folderName != "Çöp Kutusu" && note.folderName != "Arşiv" ).toList();
+    List<Note> notes =
+    allNotes.where((note) => note.folderName != "Çöp Kutusu" && note.folderName != "Arşiv").toList();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
         appBar: AppBar(
-          backgroundColor: Colors.grey[300],
+          backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
           title: Text('Notlarım'),
           bottom: TabBar(
             tabs: [
@@ -60,15 +60,15 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.menu),
               onPressed: () {
                 // Özel menüyü göster
-                showCustomMenu(context,notes,archivedNotes,deletedNotes);
+                showCustomMenu(context, notes, archivedNotes, deletedNotes);
               },
             ),
           ],
         ),
         body: TabBarView(
           children: [
-            ChooseFolderPage(notes: notes,archivedNotes: archivedNotes, deletedNotes: deletedNotes),
-            AllNotesPage( notes: notes, archivedNotes: archivedNotes, deletedNotes: deletedNotes),
+            ChooseFolderPage(notes: notes, archivedNotes: archivedNotes, deletedNotes: deletedNotes),
+            AllNotesPage(notes: notes, archivedNotes: archivedNotes, deletedNotes: deletedNotes),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pop(context); // Menüyü kapat
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TrashPage(deletedNotes: deletedNotes,)),
+                    MaterialPageRoute(builder: (context) => TrashPage(deletedNotes: deletedNotes)),
                   );
                 },
               ),
@@ -175,7 +175,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   fetchDataFromAPI() async {
-
     String url = 'http://10.0.2.2:8080/api/users/${widget.user.email}';
     //10 sn time limit
     final response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10));
@@ -184,6 +183,5 @@ class _HomePageState extends State<HomePage> {
       User updatedUser = User.fromJson(jsonDecode(decodedData));
       return updatedUser;
     }
-
   }
 }

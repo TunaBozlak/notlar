@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-
 import '../../../models/note.dart';
 import 'package:http/http.dart' as http;
+import '../../../components/themenotifier.dart';
+import 'package:provider/provider.dart';
 
 class TrashPage extends StatefulWidget {
   final List<Note> deletedNotes;
@@ -17,6 +17,8 @@ class TrashPage extends StatefulWidget {
 class _TrashPageState extends State<TrashPage> {
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Çöp Kutusu'),
@@ -24,35 +26,28 @@ class _TrashPageState extends State<TrashPage> {
       body: widget.deletedNotes.isEmpty
           ? Center(child: Text("Çöp kutusu boş."))
           : ListView.builder(
-              itemCount: widget.deletedNotes.length,
-              itemBuilder: (context, index) {
-                return TrashItem(
-                  note: widget.deletedNotes[index].noteTitle,
-                  ondelete: () async {
-                    // Silme İşlemi
-                    if (await deleteNotePermanently(
-                        widget.deletedNotes[index])) {
-                      widget.deletedNotes.removeAt(index);
-                      setState(() {});
-                    }
-                    setState(() {});
-                  },
-                  onrestore: () async {
-                    // Geri Yükleme İşlemi
-
-                    // Geri yüklenen notu burada işleyebilirsiniz.
-                    //print("Restored Note: $restoredNote");
-                    if (await updateFolderWithAPI(
-                        widget.deletedNotes[index], "Kategorisiz")) {
-                      widget.deletedNotes.removeAt(index);
-                      setState(() {
-                        // Silme İşlemi
-                      });
-                    }
-                  },
-                );
-              },
-            ),
+        itemCount: widget.deletedNotes.length,
+        itemBuilder: (context, index) {
+          return TrashItem(
+            note: widget.deletedNotes[index].noteTitle,
+            ondelete: () async {
+              if (await deleteNotePermanently(
+                  widget.deletedNotes[index])) {
+                widget.deletedNotes.removeAt(index);
+                setState(() {});
+              }
+              setState(() {});
+            },
+            onrestore: () async {
+              if (await updateFolderWithAPI(
+                  widget.deletedNotes[index], "Kategorisiz")) {
+                widget.deletedNotes.removeAt(index);
+                setState(() {});
+              }
+            },
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showClearConfirmationDialog(context);
@@ -60,6 +55,7 @@ class _TrashPageState extends State<TrashPage> {
         tooltip: 'Çöp Kutusunu Temizle',
         child: Icon(Icons.delete_forever),
       ),
+      backgroundColor: themeNotifier.isDarkMode ? Colors.black : Colors.white,
     );
   }
 
@@ -82,9 +78,8 @@ class _TrashPageState extends State<TrashPage> {
                 bool error = false;
                 while (widget.deletedNotes.isNotEmpty && error == false) {
                   if (await deleteNotePermanently(widget.deletedNotes.last)) {
-                    widget.deletedNotes.removeAt(widget.deletedNotes.length-1);
+                    widget.deletedNotes.removeLast();
                   } else {
-                    //stop loop if error occurs
                     error = true;
                   }
                 }
@@ -101,8 +96,6 @@ class _TrashPageState extends State<TrashPage> {
 
   Future<bool> updateWithAPI(Note note) async {
     String url = 'http://10.0.2.2:8080/api/notes/${note.id}';
-    //10 sn time limit
-
     final response = await http.put(
       Uri.parse(url),
       body: json.encode(note),
@@ -125,12 +118,10 @@ class _TrashPageState extends State<TrashPage> {
 
   deleteNotePermanently(Note deletedNote) async {
     String url = 'http://10.0.2.2:8080/api/notes/${deletedNote.id}';
-    //10 sn time limit
-
     final response = await http
         .delete(
-          Uri.parse(url),
-        )
+      Uri.parse(url),
+    )
         .timeout(const Duration(seconds: 10));
 
     if (response.statusCode == 200) {
@@ -151,6 +142,8 @@ class TrashItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return GestureDetector(
       onLongPress: () {
         showOptionsDialog(context);

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-
 import '../../../models/note.dart';
+import 'package:notlar/components/themenotifier.dart';
+import 'package:provider/provider.dart';
 
 class NoteContentPage extends StatelessWidget {
   final Note note;
 
-  const NoteContentPage({Key? key, required this.note})
-      : super(key: key);
+  const NoteContentPage({Key? key, required this.note}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     TextEditingController controller = TextEditingController(text: note.noteText);
 
     void showClearConfirmationDialog() {
@@ -41,11 +43,11 @@ class NoteContentPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
         title: Text('Not İçeriği'),
       ),
       body: Container(
-        color: Colors.grey[300], // Notlar arka plan rengi
+        color: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -53,7 +55,7 @@ class NoteContentPage extends StatelessWidget {
             children: [
               Text(
                 'Not:',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: themeNotifier.isDarkMode ? Colors.white : Colors.black),
               ),
               Expanded(
                 child: TextField(
@@ -78,7 +80,7 @@ class NoteContentPage extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      note.noteText=controller.text;
+                      note.noteText = controller.text;
                       Navigator.of(context).pop(note);
                     },
                     child: Text('Kaydet'),

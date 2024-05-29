@@ -2,14 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:notlar/components/mybutton.dart';
 import 'package:notlar/components/mytextfield.dart';
 import 'package:notlar/components/squaretile.dart';
+import 'package:notlar/components/themenotifier.dart';
 
 import '../../models/User.dart';
-
-
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   final VoidCallback Uyeol;
@@ -21,9 +20,10 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
 
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
                     Icons.account_circle,
                     size: 125,
                   )
-                  ],
+                ],
               ),
 
               SizedBox(height: 25),
@@ -48,7 +48,7 @@ class LoginPage extends StatelessWidget {
               Text(
                 'Hoşgeldiniz!',
                 style: TextStyle(
-                  color: Colors.grey[700],
+                  color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[700],
                   fontSize: 20,
                 ),
               ),
@@ -78,7 +78,7 @@ class LoginPage extends StatelessWidget {
                   children: [
                     Text(
                       'Şifremi unuttum',
-                      style: TextStyle(color: Colors.grey[600]),
+                      style: TextStyle(color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[600]),
                     ),
                   ],
                 ),
@@ -86,34 +86,34 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 25),
 
               // Oturum aç düğmesi
-          MyButton(
-            onTap: () async {
-              // Kullanıcı adı, e-posta ve şifre kontrolü yapılıyor
-              if (usernameController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-                // Kayıt işlemi gerçekleştirilir
-                User? user = await login(context);
-                if (user != null) {
-                  Oturumac(user);
-                };
-              } else {
-                // Kullanıcıya bir uyarı gösterilebilir
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text("Hata"),
-                    content: Text("Kullanıcı adı ve şifre boş olamaz."),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text("Tamam"),
+              MyButton(
+                onTap: () async {
+                  // Kullanıcı adı, e-posta ve şifre kontrolü yapılıyor
+                  if (usernameController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+                    // Kayıt işlemi gerçekleştirilir
+                    User? user = await login(context);
+                    if (user != null) {
+                      Oturumac(user);
+                    };
+                  } else {
+                    // Kullanıcıya bir uyarı gösterilebilir
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text("Hata"),
+                        content: Text("Kullanıcı adı ve şifre boş olamaz."),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text("Tamam"),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              }
-            },
-            text: 'Oturum Aç',
-          ),
+                    );
+                  }
+                },
+                text: 'Oturum Aç',
+              ),
 
               SizedBox(height: 50),
 
@@ -125,20 +125,20 @@ class LoginPage extends StatelessWidget {
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
-                        color: Colors.grey[400],
+                        color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[400],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
                         'veya devam et',
-                        style: TextStyle(color: Colors.grey[700]),
+                        style: TextStyle(color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[700]),
                       ),
                     ),
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
-                        color: Colors.grey[400],
+                        color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[400],
                       ),
                     ),
                   ],
@@ -165,10 +165,10 @@ class LoginPage extends StatelessWidget {
                   children: [
                     Text(
                       'Üye değil misin',
-                      style: TextStyle(color: Colors.grey[700]),
+                      style: TextStyle(color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[700]),
                     ),
                     SizedBox(width: 4),
-                    const Text(
+                    Text(
                       'Üye ol',
                       style: TextStyle(
                         color: Colors.blue,
@@ -183,8 +183,8 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
-
   }
+
   Future<User?> login(BuildContext context) async {
     String username = usernameController.text;
     String password = passwordController.text;
@@ -198,7 +198,7 @@ class LoginPage extends StatelessWidget {
       return user;
     }
 
-    // Kullanıcı adı veya şifre yanlış olduğunu belirtmek için alert dialog
+    // Kullanıcı adı veya şifre yanlış olduğunu belirtmek için alert diaolg
     else if (response.statusCode == 401 || response.statusCode == 404) {
       //API'den 401 dönerse, username password ikilisi yanlış,
       //API'den 404 dönerse,böyle bir kullanıcı adı veya eposta yok.

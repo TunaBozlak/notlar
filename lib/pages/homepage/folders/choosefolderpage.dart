@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notlar/pages/homepage/folders/foldernotespage.dart';
+import 'package:notlar/components/themenotifier.dart';
+import 'package:provider/provider.dart';
 
 import '../../../models/note.dart';
 
@@ -16,55 +18,54 @@ class ChooseFolderPage extends StatelessWidget {
     'Çizimler'
   ];
 
-  ChooseFolderPage(
-      {Key? key,
-      required this.notes,
-      required this.deletedNotes,
-      required this.archivedNotes})
-      : super(key: key);
+  ChooseFolderPage({
+    Key? key,
+    required this.notes,
+    required this.deletedNotes,
+    required this.archivedNotes,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return GridView.count(
       crossAxisCount: 2,
-      children: folders
-          .map(
-            (folderName) => GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FolderNotesPage(
-                            folderName: folderName,
-                            folderNotes: notes
-                                .where((note) => note.folderName == folderName)
-                                .toList(),
-                            archivedNotes: archivedNotes,
-                            deletedNotes: deletedNotes,
-                          )),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.all(8),
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[500],
-                  borderRadius: BorderRadius.circular(10),
+      children: folders.map((folderName) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FolderNotesPage(
+                  folderName: folderName,
+                  folderNotes: notes.where((note) => note.folderName == folderName).toList(),
+                  archivedNotes: archivedNotes,
+                  deletedNotes: deletedNotes,
                 ),
-                child: Center(
-                  child: Text(
-                    folderName,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+              ),
+            );
+          },
+          child: Container(
+            margin: EdgeInsets.all(8),
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[500],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text(
+                folderName,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          )
-          .toList(),
+          ),
+        );
+      }).toList(),
     );
   }
 }

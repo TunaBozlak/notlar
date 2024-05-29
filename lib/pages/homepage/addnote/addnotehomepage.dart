@@ -1,28 +1,30 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:notlar/components/themenotifier.dart';
 import 'package:notlar/models/User.dart';
 import 'package:notlar/models/file.dart';
 import 'package:notlar/pages/homepage/addnote/drawingpage.dart';
 import 'package:notlar/pages/homepage/addnote/selectfolderpage.dart';
 import 'package:notlar/pages/homepage/homepage.dart';
+import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
 
 import '../../../models/note.dart';
 
 class AddNoteHomePage extends StatefulWidget {
   final User user;
+
   const AddNoteHomePage({Key? key, required this.user}) : super(key: key);
 
   @override
-  AddNoteHomePageState createState() => AddNoteHomePageState();
+  _AddNoteHomePageState createState() => _AddNoteHomePageState();
 }
 
-class AddNoteHomePageState extends State<AddNoteHomePage> {
+class _AddNoteHomePageState extends State<AddNoteHomePage> {
   final TextEditingController notecontroller = TextEditingController();
   final SignatureController signaturecontroller = SignatureController(
     penStrokeWidth: 5,
@@ -34,11 +36,15 @@ class AddNoteHomePageState extends State<AddNoteHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     User user = widget.user;
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor:
+      themeNotifier.isDarkMode ? Colors.grey[900] : Colors.grey[300],
       appBar: AppBar(
-        backgroundColor: Colors.grey[300],
+        backgroundColor:
+        themeNotifier.isDarkMode ? Colors.grey[900] : Colors.grey[300],
         title: Text('Yeni Not Ekle'),
         actions: [
           IconButton(
@@ -96,18 +102,22 @@ class AddNoteHomePageState extends State<AddNoteHomePage> {
                   );
 
                   if (selectedFolder != null) {
-
-                    List<FileModel> files = [];//çizim ve fotolar
-                    if(signaturecontroller.isNotEmpty){//çizim dosyasını ekle
-                      Uint8List? signatureData = await signaturecontroller.toPngBytes();
+                    List<FileModel> files = []; // çizim ve fotolar
+                    if (signaturecontroller.isNotEmpty) {
+                      // çizim dosyasını ekle
+                      Uint8List? signatureData =
+                      await signaturecontroller.toPngBytes();
                       String base64String = base64Encode(signatureData!);
-                      FileModel drawFile=FileModel(fileType: "png", fileData: base64String);
+                      FileModel drawFile =
+                      FileModel(fileType: "png", fileData: base64String);
                       files.add(drawFile);
                     }
-                    for (XFile image in images){//fotoları ekle
+                    for (XFile image in images) {
+                      // fotoları ekle
                       Uint8List imageBytes = await image.readAsBytes();
                       String fileString = base64Encode(imageBytes);
-                      FileModel newFile= FileModel(fileType: "png",fileData: fileString);
+                      FileModel newFile =
+                      FileModel(fileType: "png", fileData: fileString);
                       files.add(newFile);
                     }
 
@@ -134,15 +144,14 @@ class AddNoteHomePageState extends State<AddNoteHomePage> {
                         context,
                         MaterialPageRoute(builder: (context) => HomePage(user: user)),
                       );
-
-                    }
-                    else{
+                    } else {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text('Hata'),
-                            content: Text('Not kaydedilemedi.Sistemsel bir hata oluştu'),
+                            content: Text(
+                                'Not kaydedilemedi.Sistemsel bir hata oluştu'),
                             actions: <Widget>[
                               TextButton(
                                 child: Text('Tamam'),
@@ -155,11 +164,7 @@ class AddNoteHomePageState extends State<AddNoteHomePage> {
                         },
                       );
                     }
-
-
                   }
-
-
                 }
               }
             },
@@ -175,7 +180,7 @@ class AddNoteHomePageState extends State<AddNoteHomePage> {
                 child: Column(
                   children: [
                     TextField(
-                      controller: notecontroller, // Controller atanması
+                      controller: notecontroller,
                       decoration: InputDecoration(
                         hintText: 'Notunuzu buraya yazın',
                         border: InputBorder.none,
