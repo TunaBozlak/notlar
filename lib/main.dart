@@ -23,7 +23,15 @@ class MyApp extends StatelessWidget {
       builder: (context, themeNotifier, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: themeNotifier.currentTheme, // Dinamik tema
+          theme: themeNotifier.currentTheme.copyWith(
+            // Yazı tipi boyutunu burada uygulama genelinde ayarla
+            textTheme: themeNotifier.currentTheme.textTheme.copyWith(
+              bodyText1: themeNotifier.currentTheme.textTheme.bodyText1?.copyWith(fontSize: themeNotifier.fontSize),
+              bodyText2: themeNotifier.currentTheme.textTheme.bodyText2?.copyWith(fontSize: themeNotifier.fontSize),
+              headline6: themeNotifier.currentTheme.textTheme.headline6?.copyWith(fontSize: themeNotifier.fontSize),
+              // Diğer metin stilleri için aynı şekilde devam edebilirsiniz
+            ),
+          ),
           initialRoute: '/login',
           routes: {
             '/login': (context) => LoginPage(

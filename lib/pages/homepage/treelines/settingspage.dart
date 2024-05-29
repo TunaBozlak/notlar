@@ -19,9 +19,11 @@ class SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     return Scaffold(
-      backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
+      backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors
+          .grey[300],
       appBar: AppBar(
-        backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors.grey[300],
+        backgroundColor: themeNotifier.isDarkMode ? Colors.grey[800] : Colors
+            .grey[300],
         title: Text('Ayarlar'),
       ),
       body: ListView(
@@ -35,7 +37,8 @@ class SettingsPageState extends State<SettingsPage> {
                     ? 'Uygulamanın temasını karanlık moda geçirin'
                     : 'Uygulamanın temasını aydınlık moda geçirin'),
                 trailing: IconButton(
-                  icon: Icon(themeNotifier.isDarkMode ? Icons.dark_mode : Icons.light_mode),
+                  icon: Icon(themeNotifier.isDarkMode ? Icons.dark_mode : Icons
+                      .light_mode),
                   onPressed: () {
                     themeNotifier.toggleTheme();
                   },
@@ -50,7 +53,8 @@ class SettingsPageState extends State<SettingsPage> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ChangePasswordPage(user: widget.user)),
+                MaterialPageRoute(builder: (context) =>
+                    ChangePasswordPage(user: widget.user)),
               );
             },
           ),
@@ -68,6 +72,8 @@ class SettingsPageState extends State<SettingsPage> {
   }
 
   void showFontSizeDialog() {
+    double selectedFontSize = fontSize; // Başlangıçta seçilen boyut, mevcut boyut
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -78,28 +84,47 @@ class SettingsPageState extends State<SettingsPage> {
             children: [
               Text('Yazı tipi boyutunu seçin:'),
               SizedBox(height: 16.0),
-              Slider(
-                value: fontSize,
-                min: 10,
-                max: 30,
-                divisions: 20,
-                onChanged: (newValue) {
-                  setState(() {
-                    fontSize = newValue;
-                  });
-                },
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        selectedFontSize = 12.0; // Düşük boyut
+                        Navigator.of(context).pop(selectedFontSize);
+                        Provider.of<ThemeNotifier>(context, listen: false)
+                            .setFontSize(selectedFontSize);
+                      },
+                      child: Text('Küçük'),
+                    ),
+                  ),
+                  SizedBox(width: 8.0),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        selectedFontSize = 20.0; // Orta boyut
+                        Navigator.of(context).pop(selectedFontSize);
+                        Provider.of<ThemeNotifier>(context, listen: false)
+                            .setFontSize(selectedFontSize);
+                      },
+                      child: Text('Orta'),
+                    ),
+                  ),
+                  SizedBox(width: 8.0),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        selectedFontSize = 25.0; // Büyük boyut
+                        Navigator.of(context).pop(selectedFontSize);
+                        Provider.of<ThemeNotifier>(context, listen: false)
+                            .setFontSize(selectedFontSize);
+                      },
+                      child: Text('Büyük'),
+                    ),
+                  ),
+                ],
               ),
-              Text('${fontSize.toStringAsFixed(1)} pt'), // Yazı tipi boyutunu göster
             ],
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Tamam'),
-            ),
-          ],
         );
       },
     );

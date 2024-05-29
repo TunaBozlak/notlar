@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 50),
+              SizedBox(height: 40),
 
               // Logo
               Row(
@@ -49,7 +49,7 @@ class LoginPage extends StatelessWidget {
                 'Hoşgeldiniz!',
                 style: TextStyle(
                   color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[700],
-                  fontSize: 20,
+                  fontSize: themeNotifier.fontSize, // Yazı tipi boyutunu dinamik olarak ayarla
                 ),
               ),
               SizedBox(height: 25),
@@ -83,7 +83,7 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 25),
+              SizedBox(height: 20),
 
               // Oturum aç düğmesi
               MyButton(
@@ -115,7 +115,7 @@ class LoginPage extends StatelessWidget {
                 text: 'Oturum Aç',
               ),
 
-              SizedBox(height: 50),
+              SizedBox(height: 30),
 
               // Veya devam et
               Padding(
@@ -144,7 +144,7 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 30),
 
               // Google ve Apple ile oturum açma
               Row(
@@ -155,7 +155,7 @@ class LoginPage extends StatelessWidget {
                   SquareTile(imagePath: 'lib/images/apple.png'),
                 ],
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 30),
 
               // Üye değil misin? Kayıt ol
               GestureDetector(

@@ -39,7 +39,7 @@ class RegisterPage extends StatelessWidget {
                   'Hesap Oluştur!',
                   style: TextStyle(
                     color: themeNotifier.isDarkMode ? Colors.white : Colors.grey[700],
-                    fontSize: 20,
+                    fontSize: themeNotifier.fontSize,
                   ),
                 ),
                 SizedBox(height: 25),
